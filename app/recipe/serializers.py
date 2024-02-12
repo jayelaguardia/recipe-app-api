@@ -61,7 +61,6 @@ class RecipeSerializer(serializers.ModelSerializer):
             )
             recipe.ingredients.add(ingredient_obj)
 
-
     def create(self, validated_data):
         """Create a recipe"""
         tags = validated_data.pop('tags', [])
@@ -94,4 +93,14 @@ class RecipeDetailSerializer(RecipeSerializer):
     """Serializer for recipe detail view"""
 
     class Meta(RecipeSerializer.Meta):
-        fields = RecipeSerializer.Meta.fields + ['description']
+        fields = RecipeSerializer.Meta.fields + ['description', 'image']
+
+
+class RecipeImageSerializer(serializers.ModelSerializer):
+    """Serializer for uploading images to recipes"""
+
+    class Meta:
+        model = Recipe
+        fields = ['id', 'image']
+        read_only_fields = ['id']
+        extra_kwargs = {'image': {'required': 'True'}}
